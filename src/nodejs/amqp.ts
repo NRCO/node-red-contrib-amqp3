@@ -251,9 +251,9 @@ node.freeConnection = function() {
 
   // Register the node by name. This must be called before overriding any of the
   // Node functions.
-  RED.nodes.registerType("amqp in", AmqpIn);
-  RED.nodes.registerType("amqp out", AmqpOut);
-  RED.nodes.registerType("amqp-server", AmqpServer, {
+  RED.nodes.registerType("amqp3 in", AmqpIn);
+  RED.nodes.registerType("amqp3 out", AmqpOut);
+  RED.nodes.registerType("amqp3-server", AmqpServer, {
       credentials: {
           user: {type: "text"},
           password: {type: "password"}
