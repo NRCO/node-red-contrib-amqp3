@@ -4,7 +4,7 @@ declare var RED: any;
 //
 // -- amqp in --------------------------------------------------------------------------------------
 //
-RED.nodes.registerType("amqp in", {
+RED.nodes.registerType("amqp3 in", {
     category: "input",
     defaults: {
         name: { value: "" },

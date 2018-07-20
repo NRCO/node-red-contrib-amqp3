@@ -4,7 +4,7 @@ declare var RED: any;
 //
 // -- amqp out -------------------------------------------------------------------------------------
 //
-RED.nodes.registerType("amqp out", {
+RED.nodes.registerType("amqp3 out", {
     category: "output",
     defaults: {
         name: { value: "" },

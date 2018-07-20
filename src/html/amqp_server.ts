@@ -4,7 +4,7 @@ declare var RED: any;
 //
 // -- amqp server ----------------------------------------------------------------------------------
 //
-RED.nodes.registerType("amqp-server", {
+RED.nodes.registerType("amqp3-server", {
     category: "config",
     defaults: {
         host: { value: "localhost" },
@@ -154,4 +154,3 @@ RED.nodes.registerType("amqp-server", {
         });
     }
 });
-
