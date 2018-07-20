@@ -1,5 +1,5 @@
 <!-- AMQP IN ------------------------------------------------------------------>
-<script type="text/x-red" data-template-name="amqp in">
+<script type="text/x-red" data-template-name="amqp3 in">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-globe"></i> Source</label>
         <input type="text" id="node-input-server" placeholder="AMQP server">
@@ -28,7 +28,7 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
-<script type="text/x-red" data-help-name="amqp in">
+<script type="text/x-red" data-help-name="amqp3 in">
     <p>AMQP input node. Connects to a server and subscribes to the specified exchange or queue.</p>
     <p>Outputs an object called
         <b>msg</b> containing <b>msg.topic</b>, <b>msg.payload</b> and <b>msg.amqpMessage</b>.</p>
@@ -42,7 +42,7 @@
 
 <!-- AMQP OUT ----------------------------------------------------------------->
 
-<script type="text/x-red" data-template-name="amqp out">
+<script type="text/x-red" data-template-name="amqp3 out">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
         <input type="text" id="node-input-server">
@@ -73,7 +73,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="amqp out">
+<script type="text/x-red" data-help-name="amqp3 out">
    <p>AMQP output node. Connects to a server and delivers the message payload to the specified exchange or queue.</p>
    <p>Expects an object called
    <b>msg</b> containing <b>msg.payload</b> and optionally <b>msg.topic</b> and <b>msg.options</b>. If <b>msg.payload</b> does not exist, the whole msg object will be sent</p>
@@ -88,7 +88,7 @@
 
 <!-- AMQP-SERVER - CONFIG ----------------------------------------------------->
 
-<script type="text/x-red" data-template-name="amqp-server">
+<script type="text/x-red" data-template-name="amqp3-server">
     <div class="form-row">
         <ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-amqp-server-tabs"></ul>
     </div>
@@ -155,7 +155,7 @@
 //
 // -- amqp in --------------------------------------------------------------------------------------
 //
-RED.nodes.registerType("amqp in", {
+RED.nodes.registerType("amqp3 in", {
     category: "input",
     defaults: {
         name: { value: "" },
@@ -179,7 +179,7 @@ RED.nodes.registerType("amqp in", {
 //
 // -- amqp out -------------------------------------------------------------------------------------
 //
-RED.nodes.registerType("amqp out", {
+RED.nodes.registerType("amqp3 out", {
     category: "output",
     defaults: {
         name: { value: "" },
@@ -204,7 +204,7 @@ RED.nodes.registerType("amqp out", {
 //
 // -- amqp server ----------------------------------------------------------------------------------
 //
-RED.nodes.registerType("amqp-server", {
+RED.nodes.registerType("amqp3-server", {
     category: "config",
     defaults: {
         host: { value: "localhost" },
