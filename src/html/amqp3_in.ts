@@ -55,12 +55,13 @@ RED.nodes.registerType("amqp3 in", {
     },
     oneditprepare: function() {
         $('select#node-input-iotype').on('change', function() {
+            $('input#node-input-exchange').focus();
+            $('input#node-input-queue').focus();
             if($(this).val() > 3) {
                 $('input#node-input-exchange').prop('disabled', true);
             } else {
                 $('input#node-input-exchange').prop('disabled', false);
             }
-            $('input#node-input-exchange').val($('input#node-input-exchange').val());
         });
     }
 });
