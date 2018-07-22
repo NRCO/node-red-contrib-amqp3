@@ -133,7 +133,9 @@ module.exports = function(RED) {
         };
 
         node.close = function() {
-            queue.close();
+            queue.stopConsumer().then(() => {
+                queue.close();
+            })
         };
 
         initialize(node);
