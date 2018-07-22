@@ -3,8 +3,14 @@ import * as amqp from "amqp-ts";
 module.exports = function(RED) {
     "use strict";
 
-    const exchangeTypes = ["direct", "fanout", "headers", "topic"];
-    const defaultQueueOptions = {
+    const exchangeTypes = [
+        "direct",
+        "fanout",
+        "headers",
+        "topic"
+    ];
+
+    const defaultExchangeConfig = defaultQueueOptions = {
         durable: true
     };
 
@@ -92,8 +98,17 @@ module.exports = function(RED) {
             );
 
             if(node.itype !== "4") {
-                exchange = node.server.connection.declareExchange(node.exchange, exchangeTypes[node.itype]);
-                queue.bind(exchange, node.topic);
+
+                exchange = node.server.connection.declareExchange(
+                    node.exchange,
+                    exchangeTypes[node.itype],
+                    defaultExchangeConfig
+                );
+
+                queue.bind(
+                    exchange,
+                    node.topic
+                );
             }
 
             return queue.activateConsumer(
@@ -111,7 +126,7 @@ module.exports = function(RED) {
         };
 
         node.close = function() {
-            return queue.close();
+            queue.close();
         };
 
         initialize(node);
@@ -151,7 +166,8 @@ module.exports = function(RED) {
             } else {
                 target = node.server.connection.declareExchange(
                     node.exchange,
-                    exchangeTypes[node.otype]
+                    exchangeTypes[node.otype],
+                    defaultExchangeConfig
                 );
             }
 
@@ -175,9 +191,8 @@ module.exports = function(RED) {
 
         node.close = function() {
             if(node.otype === "4") {
-                return target.close();
+                target.close();
             }
-            return Promise.resolve();
         };
 
         initialize(node);
