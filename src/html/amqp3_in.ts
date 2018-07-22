@@ -14,7 +14,7 @@ RED.nodes.registerType("amqp3 in", {
         name: {
             value: ""
         },
-        type: {
+        itype: {
             value: "4",
             required: true
         },
@@ -24,7 +24,7 @@ RED.nodes.registerType("amqp3 in", {
             validate: function(val) {
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
-                if($("select#node-input-iotype").val() > 3) {
+                if($("select#node-input-itype").val() > 3) {
                     return true;
                 } else if(typeof val === "string" && val.length > 0) {
                     return true;
@@ -39,7 +39,7 @@ RED.nodes.registerType("amqp3 in", {
             validate: function(val) {
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
-                if($("select#node-input-iotype").val() > 3) {
+                if($("select#node-input-itype").val() > 3) {
                     return true;
                 } else if(typeof val === "string" && val.length > 0) {
                     return true;
@@ -64,7 +64,7 @@ RED.nodes.registerType("amqp3 in", {
         return this.name ? "node_label_italic" : "";
     },
     oneditprepare: function() {
-        $("select#node-input-iotype").on("change", function() {
+        $("select#node-input-itype").on("change", function() {
             var isQueueType = ($(this).val() > 3);
             // on trigger la validation avant activation ou désactivation
             $("input#node-input-exchange").trigger("change");
