@@ -7,12 +7,30 @@ declare var RED: any;
 RED.nodes.registerType("amqp3 in", {
     category: "input",
     defaults: {
-        name: { value: "" },
-        topic: { value: "" },
-        iotype: { value: "4", required: true },
-        exchange: { value: "", required: true },
-        queue: { value: "", required: true },
-        server: { type: "amqp-server", required: true }
+        name: {
+            value: ""
+        },
+        topic: {
+            value: ""
+        },
+        iotype: {
+            value: "4",
+            required: true
+        },
+        exchange: {
+            value: "",
+            validate: function(val) {
+                console.log(val, this);
+            }
+        },
+        queue: {
+            value: "",
+            required: false
+        },
+        server: {
+            type: "amqp-server",
+            required: true
+        }
     },
     inputs: 0,
     outputs: 1,
