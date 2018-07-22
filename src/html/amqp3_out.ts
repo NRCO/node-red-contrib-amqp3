@@ -10,6 +10,10 @@ RED.nodes.registerType("amqp3 out", {
         name: {
             value: ""
         },
+        otype: {
+            value: "4",
+            required: true
+        },
         server: {
             type: "amqp-server",
             required: true
