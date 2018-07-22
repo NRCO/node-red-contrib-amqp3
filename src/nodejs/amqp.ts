@@ -139,11 +139,11 @@ module.exports = function(RED) {
         };
 
         node.close = function(removed) {
-            console.log('closing node');
+            console.log("closing node");
             return new Promise((resolve, reject) => {
                 queue.stopConsumer()
                 .then(() => {
-                    console.log('consumer closed');
+                    console.log("consumer closed");
                     return removed ? queue.close() : Promise.resolve();
                 })
                 .then(resolve)
@@ -243,9 +243,9 @@ module.exports = function(RED) {
 
         node.buildUrl = function() {
 
-            var credentials = node.credentials,
+            var creds = node.credentials,
                 protocol = node.useTls ? "amqps://" : "amqp://",
-                credentials = credentials.user ? `${credentials.user}:${credentials.password}@` : "",
+                credentials = creds.user ? `${creds.user}:${creds.password}@` : "",
                 vhost = node.vhost ? `/${node.vhost}` : "";
                 params = node.keepAlive ? `heartbeat=${node.keepAlive}` : "";
 
