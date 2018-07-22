@@ -60,6 +60,7 @@ RED.nodes.registerType("amqp3 in", {
             } else {
                 $('input#node-input-exchange').prop('disabled', false);
             }
+            $('input#node-input-exchange').val($('input#node-input-exchange').val());
         });
     }
 });
