@@ -11,7 +11,19 @@ RED.nodes.registerType("amqp3 in", {
             value: ""
         },
         topic: {
-            value: ""
+            value: "",
+            required: false,
+            validate: function(val) {
+                // si le mode écoute d'une queue est activé
+                // alors exchange n'est pas obligatoire
+                if($('select#node-input-iotype').val() > 3) {
+                    return true;
+                } else if(typeof val === 'string' && val.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         iotype: {
             value: "4",
@@ -21,22 +33,20 @@ RED.nodes.registerType("amqp3 in", {
             value: "",
             required: false,
             validate: function(val) {
-                console.log('validate', $('select#node-input-iotype').val());
+                // si le mode écoute d'une queue est activé
+                // alors exchange n'est pas obligatoire
                 if($('select#node-input-iotype').val() > 3) {
-                    console.log('iotype > 3');
                     return true;
                 } else if(typeof val === 'string' && val.length > 0) {
-                    console.log('valid string');
                     return true;
                 } else {
-                    console.log('invalid');
                     return false;
                 }
             }
         },
         queue: {
             value: "",
-            required: false
+            required: true
         },
         server: {
             type: "amqp-server",
@@ -55,13 +65,10 @@ RED.nodes.registerType("amqp3 in", {
     },
     oneditprepare: function() {
         $('select#node-input-iotype').on('change', function() {
-            console.log('on iotype change', $(this).val());
+            var isQueueType = ($(this).val() > 3);
+            // on trigger la validation avant activation ou désactivation
             $('input#node-input-exchange').trigger('change');
-            if($(this).val() > 3) {
-                $('input#node-input-exchange').prop('disabled', true);
-            } else {
-                $('input#node-input-exchange').prop('disabled', false);
-            }
+            $('input#node-input-exchange, input#node-input-topic').prop('disabled', isQueueType);
         });
     }
 });
