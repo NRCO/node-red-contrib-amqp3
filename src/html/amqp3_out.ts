@@ -7,11 +7,58 @@ declare var RED: any;
 RED.nodes.registerType("amqp3 out", {
     category: "output",
     defaults: {
-        name: { value: "" },
-        routingkey: { value: "" },
-        iotype: { value: "0", required: true},
-        ioname: { value: "", required: true },
-        server: { type: "amqp-server", required: true }
+        name: {
+            value: ""
+        },
+        server: {
+            type: "amqp-server",
+            required: true
+        },
+        exchange: {
+            value: "",
+            required: false,
+            validate: function(val) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if($("select#node-input-otype").val() > 3) {
+                    return true;
+                } else if(typeof val === "string" && val.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        topic: {
+            value: "",
+            required: false,
+            validate: function(val) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if($("select#node-input-otype").val() > 3) {
+                    return true;
+                } else if(typeof val === "string" && val.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        queue: {
+            value: "",
+            required: false,
+            validate: function(val) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if($("select#node-input-otype").val() <= 3) {
+                    return true;
+                } else if(typeof val === "string" && val.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
     },
     inputs: 1,
     outputs: 0,
@@ -23,5 +70,14 @@ RED.nodes.registerType("amqp3 out", {
     },
     labelStyle: function() {
         return this.name ? "node_label_italic" : "";
+    },
+    oneditprepare: function() {
+        $("select#node-input-otype").on("change", function() {
+            var isQueueType = ($(this).val() > 3);
+            // on trigger la validation avant activation ou désactivation
+            $("input#node-input-topic, input#node-input-queue, input#node-input-exchange").trigger("change");
+            $("input#node-input-exchange, input#node-input-topic").prop("disabled", !isQueueType);
+            $("input#node-input-queue").prop("disabled", isQueueType);
+        });
     }
 });
