@@ -14,11 +14,11 @@ RED.nodes.registerType("amqp3 in", {
             value: "",
             required: false,
             validate: function(val) {
-                // si le mode écoute d'une queue est activé
-                // alors exchange n'est pas obligatoire
-                if($('select#node-input-iotype').val() > 3) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if($("select#node-input-iotype").val() > 3) {
                     return true;
-                } else if(typeof val === 'string' && val.length > 0) {
+                } else if(typeof val === "string" && val.length > 0) {
                     return true;
                 } else {
                     return false;
@@ -33,11 +33,11 @@ RED.nodes.registerType("amqp3 in", {
             value: "",
             required: false,
             validate: function(val) {
-                // si le mode écoute d'une queue est activé
-                // alors exchange n'est pas obligatoire
-                if($('select#node-input-iotype').val() > 3) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if($("select#node-input-iotype").val() > 3) {
                     return true;
-                } else if(typeof val === 'string' && val.length > 0) {
+                } else if(typeof val === "string" && val.length > 0) {
                     return true;
                 } else {
                     return false;
@@ -64,11 +64,11 @@ RED.nodes.registerType("amqp3 in", {
         return this.name ? "node_label_italic" : "";
     },
     oneditprepare: function() {
-        $('select#node-input-iotype').on('change', function() {
+        $("select#node-input-iotype").on("change", function() {
             var isQueueType = ($(this).val() > 3);
             // on trigger la validation avant activation ou désactivation
-            $('input#node-input-exchange').trigger('change');
-            $('input#node-input-exchange, input#node-input-topic').prop('disabled', isQueueType);
+            $("input#node-input-exchange").trigger("change");
+            $("input#node-input-exchange, input#node-input-topic").prop("disabled", isQueueType);
         });
     }
 });
