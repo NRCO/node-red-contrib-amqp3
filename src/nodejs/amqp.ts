@@ -39,14 +39,20 @@ module.exports = function(RED) {
         })
         .then(function() {
 
-            node.on("close", function() {
-                node.close()
+            node.on("close", function(removed, done) {
+                node.close(removed)
+                .catch(function (err) {
+                    node.status({fill: "red", shape: "dot", text: "disconnect error"});
+                    node.error("AMQP " + node.amqpType + " node disconnect error: " + err.message);
+                    return node.server.freeConnection();
+                })
                 .then(function () {
-                    node.server.freeConnection();
+                    return node.server.freeConnection();
+                })
+                .then(() => {
                     node.status({fill: "red", shape: "ring", text: "disconnected"});
                 })
                 .catch(function (err) {
-                    node.server.freeConnection();
                     node.status({fill: "red", shape: "dot", text: "disconnect error"});
                     node.error("AMQP " + node.amqpType + " node disconnect error: " + err.message);
                 });
@@ -132,10 +138,17 @@ module.exports = function(RED) {
             }
         };
 
-        node.close = function() {
-            queue.stopConsumer().then(() => {
-                queue.close();
-            })
+        node.close = function(removed) {
+            console.log('closing node');
+            return new Promise((resolve, reject) => {
+                queue.stopConsumer()
+                .then(() => {
+                    console.log('consumer closed');
+                    return removed ? queue.close() : Promise.resolve();
+                })
+                .then(resolve)
+                .catch(reject);
+            });
         };
 
         initialize(node);
@@ -208,102 +221,114 @@ module.exports = function(RED) {
         initialize(node);
     }
 
+    function AmqpServer(n) {
 
-//
-//-- AMQP SERVER --------------------------------------------------------------
-//
-function AmqpServer(n) {
-    var node = this;
-    RED.nodes.createNode(node, n);
+        var node = this;
 
-    // Store local copies of the node configuration (as defined in the .html)
-    node.host = n.host || "localhost";
-    node.port = n.port || "5672";
-    node.vhost = n.vhost;
-    node.keepAlive = n.keepalive;
-    node.useTls = n.usetls;
-    node.useTopology = n.usetopology;
-    node.topology = n.topology;
-    node.ca = n.ca || null;
+        RED.nodes.createNode(node, n);
 
-    node.clientCount = 0;
-    node.connectionPromise = null;
-    node.connection = null;
+        // Store local copies of the node configuration (as defined in the .html)
+        node.host = n.host || "localhost";
+        node.port = n.port || "5672";
+        node.vhost = n.vhost;
+        node.keepAlive = n.keepalive;
+        node.useTls = n.usetls;
+        node.useTopology = n.usetopology;
+        node.topology = n.topology;
+        node.ca = n.ca || null;
 
-    node.claimConnection = function() {
-        if (node.clientCount === 0) {
-        // Create the connection url for the AMQP server
-        var urlType = node.useTls ? "amqps://" : "amqp://";
-        var credentials = "";
-        if (node.credentials.user) {
-            credentials = node.credentials.user + ":" + node.credentials.password + "@";
-        }
-        var urlLocation = node.host + ":" + node.port;
-        if (node.vhost) {
-            urlLocation += "/" + node.vhost;
-        }
-        if (node.keepAlive) {
-            urlLocation += "?heartbeat=" + node.keepAlive;
-        }
+        node.clientCount = 0;
+        node.connectionPromise = null;
+        node.connection = null;
 
-        var opt = {
-            ca: []
+        node.buildUrl = function() {
+
+            var credentials = node.credentials,
+                protocol = node.useTls ? "amqps://" : "amqp://",
+                credentials = credentials.user ? `${credentials.user}:${credentials.password}@` : "",
+                vhost = node.vhost ? `/${node.vhost}` : "";
+                params = node.keepAlive ? `heartbeat=${node.keepAlive}` : "";
+
+            return `${protocol}${credentials}${node.host}:${node.port}${vhost}${params}`;
         };
 
-        if (node.ca) {
-            console.log(node.ca);
-            console.log(urlType + credentials + urlLocation);
-            opt.ca.push(new Buffer(node.ca, "base64"));
-        }
+        node.claimConnection = function() {
+            return new Promise((resolve, reject) => {
+                if (node.clientCount === 0) {
 
-        node.connection = new amqp.Connection(urlType + credentials + urlLocation, opt);
-        node.connectionPromise = node.connection.initialized.then(function () {
-            node.log("Connected to AMQP server " + urlType + urlLocation);
-        }).catch(function (e) {
-            node.error("AMQP-SERVER error: " + e.message);
-        });
+                    var opt = {
+                        ca: []
+                    };
 
-        // Create topology
-        if (node.useTopology) {
-            try {
-                var topology = JSON.parse(node.topology);
-            } catch (e) {
-                node.error("AMQP-SERVER error creating topology: " + e.message);
+                    if(node.ca) {
+                        opt.ca.push(new Buffer(node.ca, "base64"));
+                    }
+
+                    node.connection = new amqp.Connection(node.buildUrl(), opt);
+
+                    node.connection.initialized
+                    .then(() => {
+                        node.log("Connected to AMQP server");
+                        if(!node.useTopology) {
+                            return Promise.resolve();
+                        } else {
+                            try {
+                                var topology = JSON.parse(node.topology);
+                            } catch (e) {
+                                node.error("AMQP-SERVER error creating topology: " + e.message);
+                                reject(e);
+                            }
+                            return node.connection.declareTopology(topology);
+                        }
+                    })
+                    .then(() => {
+                        resolve(node.connection);
+                    })
+                    .catch(function (e) {
+                        node.error("AMQP-SERVER error: " + e.message);
+                    });
+                } else {
+                    resolve(node.connection);
+                }
+                node.clientCount++;
             }
-            node.connectionPromise = node.connection.declareTopology(topology).catch(function (e) {
-                node.error("AMQP-SERVER error creating topology: " + e.message);
+        };
+
+        node.freeConnection = function() {
+            return new Promise((resolve, reject) => {
+                node.clientCount--;
+                if(node.clientCount === 0) {
+                    node.connection.close().then(function () {
+                        node.connection = null;
+                        node.connectionPromise = null;
+                        node.log("AMQP server connection " + node.host + " closed");
+                        resolve();
+                    }).catch(function (e) {
+                        node.error("AMQP-SERVER error closing connection: " + e.message);
+                        reject(e);
+                    });
+                }
             });
+
+        };
+    }
+
+    // Register the node by name. This must be called
+    // before overriding any of the node functions.
+    RED.nodes.registerType("amqp3 in", AmqpIn);
+    RED.nodes.registerType("amqp3 out", AmqpOut);
+    RED.nodes.registerType(
+        "amqp3-server",
+        AmqpServer,
+        {
+            credentials: {
+                user: {
+                    type: "text"
+                },
+                password: {
+                    type: "password"
+                }
+            }
         }
-    }
-    node.clientCount++;
-
-
-    return node.connectionPromise;
-};
-
-node.freeConnection = function() {
-    node.clientCount--;
-
-    if (node.clientCount === 0) {
-        node.connection.close().then(function () {
-            node.connection = null;
-            node.connectionPromise = null;
-            node.log("AMQP server connection " + node.host + " closed");
-        }).catch(function (e) {
-            node.error("AMQP-SERVER error closing connection: " + e.message);
-        });
-    }
-};
-}
-
-  // Register the node by name. This must be called before overriding any of the
-  // Node functions.
-  RED.nodes.registerType("amqp3 in", AmqpIn);
-  RED.nodes.registerType("amqp3 out", AmqpOut);
-  RED.nodes.registerType("amqp3-server", AmqpServer, {
-      credentials: {
-          user: {type: "text"},
-          password: {type: "password"}
-      }
-  });
+    );
 };
