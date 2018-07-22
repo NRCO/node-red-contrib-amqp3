@@ -76,8 +76,8 @@ RED.nodes.registerType("amqp3 out", {
             var isQueueType = ($(this).val() > 3);
             // on trigger la validation avant activation ou désactivation
             $("input#node-input-topic, input#node-input-queue, input#node-input-exchange").trigger("change");
-            $("input#node-input-exchange, input#node-input-topic").prop("disabled", !isQueueType);
-            $("input#node-input-queue").prop("disabled", isQueueType);
+            $("input#node-input-exchange, input#node-input-topic").prop("disabled", isQueueType);
+            $("input#node-input-queue").prop("disabled", !isQueueType);
         });
     }
 });
