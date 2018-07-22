@@ -10,7 +10,8 @@ RED.nodes.registerType("amqp3 in", {
         name: { value: "" },
         topic: { value: "" },
         iotype: { value: "4", required: true },
-        ioname: { value: "", required: true },
+        exchange: { value: "", required: true },
+        queue: { value: "", required: true },
         server: { type: "amqp-server", required: true }
     },
     inputs: 0,
