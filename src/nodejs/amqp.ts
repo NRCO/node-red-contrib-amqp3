@@ -10,9 +10,11 @@ module.exports = function(RED) {
         "topic"
     ];
 
-    const defaultExchangeConfig = defaultQueueOptions = {
+    const defaultQueueOptions = {
         durable: true
     };
+
+    const defaultExchangeConfig = defaultQueueOptions;
 
     function getServer(node) {
         return new Promise(function(resolve, reject) {
