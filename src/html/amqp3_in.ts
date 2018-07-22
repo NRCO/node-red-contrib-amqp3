@@ -23,5 +23,18 @@ RED.nodes.registerType("amqp3 in", {
     },
     labelStyle: function() {
         return this.name ? "node_label_italic" : "";
+    },
+    oneditprepare: function() {
+        console.log('javascript block');
+        $('select#node-input-iotype').on('change', function() {
+            console.log('change select', $(this).val());
+            if($(this).val() > 3) {
+                $('div.input-queue').show();
+                $('div.input-exchange').hide();
+            } else {
+                $('div.input-queue').hide();
+                $('div.input-exchange').show();
+            }
+        });
     }
 });

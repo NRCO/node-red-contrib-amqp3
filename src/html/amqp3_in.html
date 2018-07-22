@@ -31,22 +31,6 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
-    <script>
-        console.log('javascript block');
-        $('document').ready(function() {
-            console.log('document ready');
-            $('select#node-input-iotype').on('change', function() {
-                console.log('change select', $(this).val());
-                if($(this).val() > 3) {
-                    $('div.input-queue').show();
-                    $('div.input-exchange').hide();
-                } else {
-                    $('div.input-queue').hide();
-                    $('div.input-exchange').show();
-                }
-            });
-        });
-    </script>
 </script>
 <script type="text/x-red" data-help-name="amqp3 in">
     <p>AMQP input node. Connects to a server and subscribes to the specified exchange or queue.</p>
