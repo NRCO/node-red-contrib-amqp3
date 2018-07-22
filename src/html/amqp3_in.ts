@@ -19,6 +19,7 @@ RED.nodes.registerType("amqp3 in", {
         },
         exchange: {
             value: "",
+            required: false,
             validate: function(val) {
                 if(parseInt(this.iotype) > 3) {
                     return true;
