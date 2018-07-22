@@ -22,7 +22,7 @@ RED.nodes.registerType("amqp3 in", {
             required: false,
             validate: function(val) {
                 console.log('validate', $('select#node-input-iotype').val());
-                if($('select#node-input-iotype').val()) > 3) {
+                if($('select#node-input-iotype').val() > 3) {
                     console.log('iotype > 3');
                     return true;
                 } else if(typeof val === 'string' && val.length > 0) {
