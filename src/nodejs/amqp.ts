@@ -94,7 +94,7 @@ module.exports = function(RED) {
             return queue.activateConsumer(
                 function(msg) {
                     node.send({
-                        topic: node.topic || msg.fields.routingKey,
+                        topic: msg.fields.routingKey || false,
                         payload: msg.getContent(),
                         amqpMessage: msg
                     });
