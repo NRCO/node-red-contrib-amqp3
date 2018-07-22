@@ -113,18 +113,23 @@ module.exports = function(RED) {
                 );
             }
 
-            return queue.activateConsumer(
-                function(msg) {
-                    node.send({
-                        topic: msg.fields.routingKey || false,
-                        payload: msg.getContent(),
-                        amqpMessage: msg
-                    });
-                },
-                {
-                    noAck: true
-                }
-            )
+            try {
+                queue.activateConsumer(
+                    function(msg) {
+                        node.send({
+                            topic: msg.fields.routingKey || false,
+                            payload: msg.getContent(),
+                            amqpMessage: msg
+                        });
+                    },
+                    {
+                        noAck: true
+                    }
+                );
+            } catch(err) {
+                console.log(err);
+                throw err;
+            }
         };
 
         node.close = function() {
