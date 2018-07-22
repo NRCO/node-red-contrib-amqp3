@@ -47,12 +47,16 @@
 
 <script type="text/x-red" data-template-name="amqp3 out">
     <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
         <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
         <input type="text" id="node-input-server">
     </div>
     <div class="form-row">
-        <label for="node-input-ioname"><i class="fa fa-filter"></i> Send to</label>
-        <select id="node-input-iotype">
+        <label for="node-input-otype"><i class="fa fa-filter"></i> Send to</label>
+        <select id="node-input-otype" style="width:70%">
           <option value="0">direct exchange</option>
           <option value="1">fanout exchange</option>
           <option value="2">headers exchange</option>
@@ -60,19 +64,17 @@
           <option value="4">queue</option>
         </select>
     </div>
-    <div class="form-row">
-        <label for="node-input-ioname"></label>
-        <input type="text" id="node-input-ioname" placeholder="AMQP exchange or queue name">
+    <div class="form-row input-exchange">
+        <label for="node-input-exchange"><i class="fa fa-random"></i> Exchange</label>
+        <input type="text" id="node-input-exchange" placeholder="">
     </div>
     <div class="form-row">
-        <label for="node-input-routingkey"><i class="fa fa-tasks"></i> Routing key</label>
-        <input type="text" id="node-input-routingkey" placeholder="Leave empty to use the topic of the message">
+        <label for="node-input-topic"><i class="fa fa-filter"></i> Topic</label>
+        <input type="text" id="node-input-topic" class="routing-key" placeholder="">
     </div>
-
-    <br/>
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+    <div class="form-row input-queue">
+        <label for="node-input-queue"><i class="fa fa-database"></i> Queue</label>
+        <input type="text" id="node-input-queue" placeholder="">
     </div>
 </script>
 
@@ -225,7 +227,7 @@ RED.nodes.registerType("amqp3 in", {
         $("select#node-input-itype").on("change", function () {
             var isQueueType = ($(this).val() > 3);
             // on trigger la validation avant activation ou désactivation
-            $("input#node-input-exchange").trigger("change");
+            $("input#node-input-exchange, input#node-input-topic").trigger("change");
             $("input#node-input-exchange, input#node-input-topic").prop("disabled", isQueueType);
         });
     }
@@ -237,11 +239,64 @@ RED.nodes.registerType("amqp3 in", {
 RED.nodes.registerType("amqp3 out", {
     category: "output",
     defaults: {
-        name: { value: "" },
-        routingkey: { value: "" },
-        iotype: { value: "0", required: true },
-        ioname: { value: "", required: true },
-        server: { type: "amqp-server", required: true }
+        name: {
+            value: ""
+        },
+        server: {
+            type: "amqp-server",
+            required: true
+        },
+        exchange: {
+            value: "",
+            required: false,
+            validate: function (val) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if ($("select#node-input-otype").val() > 3) {
+                    return true;
+                }
+                else if (typeof val === "string" && val.length > 0) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        },
+        topic: {
+            value: "",
+            required: false,
+            validate: function (val) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if ($("select#node-input-otype").val() > 3) {
+                    return true;
+                }
+                else if (typeof val === "string" && val.length > 0) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        },
+        queue: {
+            value: "",
+            required: false,
+            validate: function (val) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if ($("select#node-input-otype").val() <= 3) {
+                    return true;
+                }
+                else if (typeof val === "string" && val.length > 0) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
     },
     inputs: 1,
     outputs: 0,
@@ -253,6 +308,15 @@ RED.nodes.registerType("amqp3 out", {
     },
     labelStyle: function () {
         return this.name ? "node_label_italic" : "";
+    },
+    oneditprepare: function () {
+        $("select#node-input-otype").on("change", function () {
+            var isQueueType = ($(this).val() > 3);
+            // on trigger la validation avant activation ou désactivation
+            $("input#node-input-topic, input#node-input-queue, input#node-input-exchange").trigger("change");
+            $("input#node-input-exchange, input#node-input-topic").prop("disabled", !isQueueType);
+            $("input#node-input-queue").prop("disabled", isQueueType);
+        });
     }
 });
 
