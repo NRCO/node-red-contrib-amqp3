@@ -1,12 +1,16 @@
 <!-- AMQP IN ------------------------------------------------------------------>
 <script type="text/x-red" data-template-name="amqp3 in">
     <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="">
+    </div>
+    <div class="form-row">
         <label for="node-input-server"><i class="fa fa-globe"></i> Source</label>
         <input type="text" id="node-input-server" placeholder="AMQP server">
     </div>
     <div class="form-row">
-        <label for="node-input-type"><i class="fa fa-bullseye"></i> Read from</label>
-        <select id="node-input-type" class="read-mode">
+        <label for="node-input-itype"><i class="fa fa-bullseye"></i> Read from</label>
+        <select id="node-input-itype" class="read-mode">
             <option value="0">direct exchange</option>
             <option value="1">fanout exchange</option>
             <option value="2">headers exchange</option>
@@ -25,11 +29,6 @@
     <div class="form-row input-queue">
         <label for="node-input-queue"><i class="fa fa-database"></i> Queue</label>
         <input type="text" id="node-input-queue" placeholder="">
-    </div>
-    <br/>
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="">
     </div>
 </script>
 <script type="text/x-red" data-help-name="amqp3 in">
@@ -169,7 +168,7 @@ RED.nodes.registerType("amqp3 in", {
         name: {
             value: ""
         },
-        type: {
+        itype: {
             value: "4",
             required: true
         },
@@ -179,7 +178,7 @@ RED.nodes.registerType("amqp3 in", {
             validate: function (val) {
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
-                if ($("select#node-input-iotype").val() > 3) {
+                if ($("select#node-input-itype").val() > 3) {
                     return true;
                 }
                 else if (typeof val === "string" && val.length > 0) {
@@ -196,7 +195,7 @@ RED.nodes.registerType("amqp3 in", {
             validate: function (val) {
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
-                if ($("select#node-input-iotype").val() > 3) {
+                if ($("select#node-input-itype").val() > 3) {
                     return true;
                 }
                 else if (typeof val === "string" && val.length > 0) {
@@ -223,7 +222,7 @@ RED.nodes.registerType("amqp3 in", {
         return this.name ? "node_label_italic" : "";
     },
     oneditprepare: function () {
-        $("select#node-input-iotype").on("change", function () {
+        $("select#node-input-itype").on("change", function () {
             var isQueueType = ($(this).val() > 3);
             // on trigger la validation avant activation ou désactivation
             $("input#node-input-exchange").trigger("change");
