@@ -145,13 +145,20 @@ module.exports = function(RED) {
             }
 
             node.on("input", function (msg) {
+
                 var message;
+
                 if (msg.payload) {
                     message = new amqp.Message(msg.payload, msg.options);
                 } else {
                     message = new amqp.Message(msg);
                 }
-                message.sendTo(target, msg.topic || node.topic);
+
+                if(node.otype === "4") {
+                    message.sendTo(target);
+                } else {
+                    message.sendTo(target, msg.topic || node.topic);
+                }
             });
         };
 
