@@ -50,7 +50,7 @@
     ],
     "quotemark": [true, "double"],
     "radix": true,
-    "semicolon": true,
+    "semicolon": false,
     "triple-equals": [true, "allow-null-check"],
     "typedef": [false,
       "callSignature",
@@ -69,7 +69,7 @@
       "check-function"
     ],
     "variable-name": false,
-    "whitespace": [true,
+    "whitespace": [false,
       "check-branch",
       "check-decl",
       "check-operator",
