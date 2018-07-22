@@ -4,7 +4,8 @@
   "description": "Node-RED AMQP input and output nodes",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepush": "gulp build && git add lib && git commit -m 'auto build :dog: woof' --no-verify && git push origin $(git rev-parse --abbrev-ref HEAD) --no-verify && exit 1 ; exit 0 "
   },
   "keywords": [
     "node-red",
@@ -36,6 +37,7 @@
     "gulp-spawn-mocha": "^2.2.2",
     "gulp-tslint": "^5.0.0",
     "gulp-typescript": "^2.13.4",
+    "husky": "^1.0.0-rc.13",
     "merge2": "^1.0.2",
     "source-map-support": "^0.4.0",
     "tslint": "^3.10.2",
