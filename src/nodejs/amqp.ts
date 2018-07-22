@@ -51,6 +51,7 @@ module.exports = function(RED) {
                 })
                 .then(() => {
                     node.status({fill: "red", shape: "ring", text: "disconnected"});
+                    done();
                 })
                 .catch(function (err) {
                     node.status({fill: "red", shape: "dot", text: "disconnect error"});
