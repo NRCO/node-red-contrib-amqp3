@@ -212,8 +212,8 @@ RED.nodes.registerType("amqp3 in", {
     },
     oneditprepare: function () {
         $('select#node-input-iotype').on('change', function () {
-            $('input#node-input-exchange').focus();
-            $('input#node-input-queue').focus();
+            console.log('on iotype change', $(this).val());
+            $('input#node-input-exchange').trigger('change');
             if ($(this).val() > 3) {
                 $('input#node-input-exchange').prop('disabled', true);
             }
