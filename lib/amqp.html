@@ -16,11 +16,11 @@
     </div>
     <div class="form-row input-exchange">
         <label for="node-input-exchange"></label>
-        <input type="text" id="node-input-exchange" placeholder="AMQP exchange">
+        <input type="text" id="node-input-exchange" placeholder="exchange name">
     </div>
     <div class="form-row input-queue">
         <label for="node-input-queue"></label>
-        <input type="text" id="node-input-queue" placeholder="AMQP queue name">
+        <input type="text" id="node-input-queue" placeholder="queue name">
     </div>
     <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
@@ -162,12 +162,30 @@
 RED.nodes.registerType("amqp3 in", {
     category: "input",
     defaults: {
-        name: { value: "" },
-        topic: { value: "" },
-        iotype: { value: "4", required: true },
-        exchange: { value: "", required: true },
-        queue: { value: "", required: true },
-        server: { type: "amqp-server", required: true }
+        name: {
+            value: ""
+        },
+        topic: {
+            value: ""
+        },
+        iotype: {
+            value: "4",
+            required: true
+        },
+        exchange: {
+            value: "",
+            validate: function (val) {
+                console.log(val, this);
+            }
+        },
+        queue: {
+            value: "",
+            required: false
+        },
+        server: {
+            type: "amqp-server",
+            required: true
+        }
     },
     inputs: 0,
     outputs: 1,
