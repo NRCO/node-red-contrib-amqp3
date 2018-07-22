@@ -7,25 +7,14 @@ declare var RED: any;
 RED.nodes.registerType("amqp3 in", {
     category: "input",
     defaults: {
+        server: {
+            type: "amqp-server",
+            required: true
+        },
         name: {
             value: ""
         },
-        topic: {
-            value: "",
-            required: false,
-            validate: function(val) {
-                // si le mode écoute d"une queue est activé
-                // alors exchange n"est pas obligatoire
-                if($("select#node-input-iotype").val() > 3) {
-                    return true;
-                } else if(typeof val === "string" && val.length > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        },
-        iotype: {
+        type: {
             value: "4",
             required: true
         },
@@ -44,12 +33,23 @@ RED.nodes.registerType("amqp3 in", {
                 }
             }
         },
+        topic: {
+            value: "",
+            required: false,
+            validate: function(val) {
+                // si le mode écoute d"une queue est activé
+                // alors exchange n"est pas obligatoire
+                if($("select#node-input-iotype").val() > 3) {
+                    return true;
+                } else if(typeof val === "string" && val.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
         queue: {
             value: "",
-            required: true
-        },
-        server: {
-            type: "amqp-server",
             required: true
         }
     },

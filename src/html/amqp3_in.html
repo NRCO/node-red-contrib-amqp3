@@ -5,8 +5,8 @@
         <input type="text" id="node-input-server" placeholder="AMQP server">
     </div>
     <div class="form-row">
-        <label for="node-input-ioname"><i class="fa fa-filter"></i> Read from</label>
-        <select id="node-input-iotype" class="read-mode">
+        <label for="node-input-type"><i class="fa fa-bullseye"></i> Read from</label>
+        <select id="node-input-type" class="read-mode">
             <option value="0">direct exchange</option>
             <option value="1">fanout exchange</option>
             <option value="2">headers exchange</option>
@@ -15,21 +15,21 @@
         </select>
     </div>
     <div class="form-row input-exchange">
-        <label for="node-input-exchange"><i class="fa fa-tasks"></i> Exchange</label>
-        <input type="text" id="node-input-exchange" placeholder="Name">
+        <label for="node-input-exchange"><i class="fa fa-random"></i> Exchange</label>
+        <input type="text" id="node-input-exchange" placeholder="">
     </div>
     <div class="form-row">
-        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-        <input type="text" id="node-input-topic" class="routing-key" placeholder="Routing key">
+        <label for="node-input-topic"><i class="fa fa-filter"></i> Topic</label>
+        <input type="text" id="node-input-topic" class="routing-key" placeholder="">
     </div>
     <div class="form-row input-queue">
-        <label for="node-input-queue"><i class="fa fa-tasks"></i> Queue</label>
-        <input type="text" id="node-input-queue" placeholder="Name">
+        <label for="node-input-queue"><i class="fa fa-database"></i> Queue</label>
+        <input type="text" id="node-input-queue" placeholder="">
     </div>
     <br/>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <input type="text" id="node-input-name" placeholder="">
     </div>
 </script>
 <script type="text/x-red" data-help-name="amqp3 in">
