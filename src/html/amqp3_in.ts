@@ -21,7 +21,7 @@ RED.nodes.registerType("amqp3 in", {
             value: "",
             required: false,
             validate: function(val) {
-                console.log('validate');
+                console.log('validate', parseInt(this.iotype));
                 if(parseInt(this.iotype) > 3) {
                     console.log('iotype > 3');
                     return true;
