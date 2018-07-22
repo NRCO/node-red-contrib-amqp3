@@ -31,6 +31,19 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+    <script type="javascript">
+        $('document').ready(function() {
+            $('select#node-input-iotype').on('change', function() {
+                if($(this).val() > 3) {
+                    $('div.input-queue').show();
+                    $('div.input-exchange').hide();
+                } else {
+                    $('div.input-queue').hide();
+                    $('div.input-exchange').show();
+                }
+            });
+        });
+    </script>
 </script>
 <script type="text/x-red" data-help-name="amqp3 in">
     <p>AMQP input node. Connects to a server and subscribes to the specified exchange or queue.</p>
@@ -42,17 +55,4 @@
         <b>msg.amqpMessage</b> is an
         <a href="https://github.com/abreits/amqp-ts/wiki/Message%20class" target="_blank"><b>amqp-ts Message</b></a> object containing the received message.sendto
     </p>
-</script>
-<script type="javascript">
-    $('document').ready(function() {
-        $('select#node-input-iotype').on('change', function() {
-            if($(this).val() > 3) {
-                $('div.input-queue').show();
-                $('div.input-exchange').hide();
-            } else {
-                $('div.input-queue').hide();
-                $('div.input-exchange').show();
-            }
-        });
-    });
 </script>
