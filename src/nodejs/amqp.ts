@@ -135,7 +135,10 @@ module.exports = function(RED) {
     }
 
     function AmqpOut(n) {
-        var node = this;
+
+        var target,
+            node = this;
+
         RED.nodes.createNode(node, n);
 
         node.source = n.source;
@@ -151,8 +154,6 @@ module.exports = function(RED) {
 
         // node specific initialization code
         node.initialize = function () {
-
-            var target;
 
             // node.otype is a string with the following meaning:
             // "0": direct exchange
