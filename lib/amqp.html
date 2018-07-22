@@ -14,9 +14,13 @@
             <option value="4">queue</option>
         </select>
     </div>
-    <div class="form-row">
-        <label for="node-input-srcname"></label>
-        <input type="text" id="node-input-ioname" placeholder="AMQP exchange or queue name">
+    <div class="form-row input-exchange">
+        <label for="node-input-exchange"></label>
+        <input type="text" id="node-input-exchange" placeholder="AMQP exchange">
+    </div>
+    <div class="form-row input-queue">
+        <label for="node-input-queue"></label>
+        <input type="text" id="node-input-queue" placeholder="AMQP queue name">
     </div>
     <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
@@ -38,6 +42,19 @@
         <b>msg.amqpMessage</b> is an
         <a href="https://github.com/abreits/amqp-ts/wiki/Message%20class" target="_blank"><b>amqp-ts Message</b></a> object containing the received message.sendto
     </p>
+</script>
+<script type="javascript">
+    $('document').ready(function() {
+        $('select#node-input-iotype').on('change', function() {
+            if($(this).val() > 3) {
+                $('div.input-queue').show();
+                $('div.input-exchange').hide();
+            } else {
+                $('div.input-queue').hide();
+                $('div.input-exchange').show();
+            }
+        });
+    });
 </script>
 
 <!-- AMQP OUT ----------------------------------------------------------------->
