@@ -32,8 +32,11 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <script type="javascript">
+        console.log('javascript block');
         $('document').ready(function() {
+            console.log('document ready');
             $('select#node-input-iotype').on('change', function() {
+                console.log('change select', $(this).val());
                 if($(this).val() > 3) {
                     $('div.input-queue').show();
                     $('div.input-exchange').hide();
@@ -178,7 +181,8 @@ RED.nodes.registerType("amqp3 in", {
         name: { value: "" },
         topic: { value: "" },
         iotype: { value: "4", required: true },
-        ioname: { value: "", required: true },
+        exchange: { value: "", required: true },
+        queue: { value: "", required: true },
         server: { type: "amqp-server", required: true }
     },
     inputs: 0,
