@@ -21,14 +21,17 @@ RED.nodes.registerType("amqp3 in", {
             value: "",
             required: false,
             validate: function(val) {
+                console.log('validate');
                 if(parseInt(this.iotype) > 3) {
+                    console.log('iotype > 3');
+                    return true;
+                } else if(typeof val === 'string' && val.length > 0) {
+                    console.log('valid string');
                     return true;
                 } else {
-                    if(typeof val === 'string' && val.length > 0) {
-                        return true;
-                    }
+                    console.log('invalid');
+                    return false;
                 }
-                return false;
             }
         },
         queue: {
