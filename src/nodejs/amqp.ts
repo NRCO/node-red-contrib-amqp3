@@ -4,6 +4,9 @@ module.exports = function(RED) {
     "use strict";
 
     const exchangeTypes = ["direct", "fanout", "headers", "topic"];
+    const defaultQueueOptions = {
+        durable: true
+    };
 
     function getServer(node) {
         return new Promise(function(resolve, reject) {
@@ -83,10 +86,12 @@ module.exports = function(RED) {
             // "2": headers exchange
             // "3": topic exchange
             // "4": queue
-            if(node.itype === "4") {
-                queue = node.server.connection.declareQueue(node.queue);
-            } else {
-                queue = node.server.connection.declareQueue(node.queue);
+            queue = node.server.connection.declareQueue(
+                node.queue,
+                defaultQueueOptions
+            );
+
+            if(node.itype !== "4") {
                 exchange = node.server.connection.declareExchange(node.exchange, exchangeTypes[node.itype]);
                 queue.bind(exchange, node.topic);
             }
@@ -139,9 +144,15 @@ module.exports = function(RED) {
             // "3": topic exchange
             // "4": queue
             if(node.otype === "4") {
-                target = node.server.connection.declareQueue(node.queue);
+                target = node.server.connection.declareQueue(
+                    node.queue,
+                    defaultQueueOptions
+                );
             } else {
-                target = node.server.connection.declareExchange(node.exchange, exchangeTypes[node.otype]);
+                target = node.server.connection.declareExchange(
+                    node.exchange,
+                    exchangeTypes[node.otype]
+                );
             }
 
             node.on("input", function (msg) {
