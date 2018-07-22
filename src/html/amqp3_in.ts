@@ -26,11 +26,10 @@ RED.nodes.registerType("amqp3 in", {
     },
     oneditprepare: function() {
         $('select#node-input-iotype').on('change', function() {
-            alert("haha");
             if($(this).val() > 3) {
-                $('div.input-exchange').prop('disabled', true);
+                $('input#node-input-exchange').prop('disabled', true);
             } else {
-                $('div.input-exchange').prop('disabled', false);
+                $('input#node-input-exchange').prop('disabled', false);
             }
         });
     }
