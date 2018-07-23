@@ -246,7 +246,7 @@ module.exports = function(RED) {
             var creds = node.credentials,
                 protocol = node.useTls ? "amqps://" : "amqp://",
                 credentials = creds.user ? `${creds.user}:${creds.password}@` : "",
-                vhost = node.vhost ? `/${node.vhost}` : "";
+                vhost = node.vhost ? `/${node.vhost}` : "",
                 params = node.keepAlive ? `heartbeat=${node.keepAlive}` : "";
 
             return `${protocol}${credentials}${node.host}:${node.port}${vhost}${params}`;
@@ -291,8 +291,8 @@ module.exports = function(RED) {
                     resolve(node.connection);
                 }
                 node.clientCount++;
-            }
-        };
+            });
+        }
 
         node.freeConnection = function() {
             return new Promise((resolve, reject) => {
