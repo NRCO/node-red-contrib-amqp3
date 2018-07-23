@@ -91,9 +91,12 @@ module.exports = function(RED) {
         node.queue = node.sanitize(n.queue);
         node.exchange = node.sanitize(n.exchange);
         node.server = RED.nodes.getNode(n.server);
+        node.consuming = false;
 
         // node specific initialization code
         node.initialize = function () {
+
+            console.log('initialize', node);
 
             // node.itype is a string with the following meaning:
             // "0": direct exchange
@@ -120,7 +123,8 @@ module.exports = function(RED) {
                 );
             }
 
-            try {
+            if(!node.consuming) {
+                console.log('starting consume');
                 queue.activateConsumer(
                     function(msg) {
                         node.send({
@@ -133,9 +137,7 @@ module.exports = function(RED) {
                         noAck: true
                     }
                 );
-            } catch(err) {
-                console.log(err);
-                throw err;
+                node.consuming = true;
             }
         };
 
@@ -144,6 +146,7 @@ module.exports = function(RED) {
             return new Promise((resolve, reject) => {
                 queue.stopConsumer()
                 .then(() => {
+                    node.consuming = false;
                     console.log("consumer closed");
                     return removed ? queue.close() : Promise.resolve();
                 })
