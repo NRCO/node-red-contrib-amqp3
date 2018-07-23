@@ -91,13 +91,9 @@ module.exports = function(RED) {
         node.queue = node.sanitize(n.queue);
         node.exchange = node.sanitize(n.exchange);
         node.server = RED.nodes.getNode(n.server);
-        node.consuming = false;
 
         // node specific initialization code
         node.initialize = function () {
-
-            console.log(node.id, ': initialize');
-
             // node.itype is a string with the following meaning:
             // "0": direct exchange
             // "1": fanout exchange
@@ -110,44 +106,36 @@ module.exports = function(RED) {
             );
 
             if(node.itype !== "4") {
-
                 exchange = node.server.connection.declareExchange(
                     node.exchange,
                     exchangeTypes[node.itype],
                     defaultExchangeConfig
                 );
-
                 queue.bind(
                     exchange,
                     node.topic
                 );
             }
 
-            if(!node.consuming) {
-                console.log(node.id, ': starting consume');
-                queue.activateConsumer(
-                    function(msg) {
-                        node.send({
-                            topic: msg.fields.routingKey || false,
-                            payload: msg.getContent(),
-                            amqpMessage: msg
-                        });
-                    },
-                    {
-                        noAck: true
-                    }
-                );
-                node.consuming = true;
+            queue.activateConsumer(
+                function(msg) {
+                    node.send({
+                        topic: msg.fields.routingKey || false,
+                        payload: msg.getContent(),
+                        amqpMessage: msg
+                    });
+                },
+                {
+                    noAck: true
+                }
+            );
             }
         };
 
         node.close = function(removed) {
-            console.log(node.id, ": closing node");
             return new Promise((resolve, reject) => {
                 queue.stopConsumer()
                 .then(() => {
-                    node.consuming = false;
-                    console.log(node.id, ": consumer closed");
                     return removed ? queue.close() : Promise.resolve();
                 })
                 .then(resolve)
