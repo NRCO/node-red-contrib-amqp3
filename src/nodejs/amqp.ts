@@ -129,7 +129,6 @@ module.exports = function(RED) {
                     noAck: true
                 }
             );
-            }
         };
 
         node.close = function(removed) {
@@ -204,7 +203,9 @@ module.exports = function(RED) {
             });
         };
 
-        node.close = function() {};
+        node.close = function() {
+
+        };
 
         initialize(node);
     }
