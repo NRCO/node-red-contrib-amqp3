@@ -96,7 +96,7 @@ module.exports = function(RED) {
         // node specific initialization code
         node.initialize = function () {
 
-            console.log('initialize', node);
+            console.log(node.id, ': initialize');
 
             // node.itype is a string with the following meaning:
             // "0": direct exchange
@@ -124,7 +124,7 @@ module.exports = function(RED) {
             }
 
             if(!node.consuming) {
-                console.log('starting consume');
+                console.log(node.id, ': starting consume');
                 queue.activateConsumer(
                     function(msg) {
                         node.send({
@@ -142,12 +142,12 @@ module.exports = function(RED) {
         };
 
         node.close = function(removed) {
-            console.log("closing node");
+            console.log(node.id, ": closing node");
             return new Promise((resolve, reject) => {
                 queue.stopConsumer()
                 .then(() => {
                     node.consuming = false;
-                    console.log("consumer closed");
+                    console.log(node.id, ": consumer closed");
                     return removed ? queue.close() : Promise.resolve();
                 })
                 .then(resolve)
