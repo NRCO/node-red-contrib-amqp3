@@ -177,37 +177,42 @@ RED.nodes.registerType("amqp3 in", {
         exchange: {
             value: "",
             validate: function (val) {
-                console.log('validate exchange', val);
-                console.log($("select#node-input-itype").val());
-                console.log(this);
-                // si le mode écoute d"une queue est activé
-                // alors exchange n"est pas obligatoire
-                if ($("select#node-input-itype").val() > 3) {
-                    return true;
-                }
-                else if (typeof val === "string" && val.length > 0) {
+                if (!this.changed) {
                     return true;
                 }
                 else {
-                    return false;
+                    // si le mode écoute d"une queue est activé
+                    // alors exchange n"est pas obligatoire
+                    if ($("select#node-input-itype").val() > 3) {
+                        return true;
+                    }
+                    else if (typeof val === "string" && val.length > 0) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
                 }
             }
         },
         topic: {
             value: "",
             validate: function (val) {
-                console.log('validate topic', val);
-                console.log($("select#node-input-itype").val());
-                // si le mode écoute d"une queue est activé
-                // alors exchange n"est pas obligatoire
-                if ($("select#node-input-itype").val() > 3) {
-                    return true;
-                }
-                else if (typeof val === "string" && val.length > 0) {
+                if (!this.changed) {
                     return true;
                 }
                 else {
-                    return false;
+                    // si le mode écoute d"une queue est activé
+                    // alors exchange n"est pas obligatoire
+                    if ($("select#node-input-itype").val() > 3) {
+                        return true;
+                    }
+                    else if (typeof val === "string" && val.length > 0) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
                 }
             }
         },
@@ -231,7 +236,7 @@ RED.nodes.registerType("amqp3 in", {
             var isQueueType = ($(this).val() > 3);
             // on trigger la validation avant activation ou désactivation
             $("input#node-input-exchange, input#node-input-topic").trigger("change");
-            $(".input-exchange, .input-topic").css("display", isQueueType ? 'hidden' : 'block');
+            $("input#node-input-exchange, input#node-input-topic").attr("disabled", isQueueType);
         });
     }
 });
