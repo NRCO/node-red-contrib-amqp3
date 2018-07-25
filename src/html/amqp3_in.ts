@@ -23,7 +23,7 @@ RED.nodes.registerType("amqp3 in", {
             validate: function(val) {
                 console.log('validate exchange', val);
                 console.log($("select#node-input-itype").val());
-
+                console.log(this);
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
                 if($("select#node-input-itype").val() > 3) {
