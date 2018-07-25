@@ -12,7 +12,8 @@ RED.nodes.registerType("amqp3 in", {
             required: true
         },
         name: {
-            value: ""
+            value: "",
+            required: true
         },
         itype: {
             value: "4",
@@ -37,6 +38,11 @@ RED.nodes.registerType("amqp3 in", {
             value: "",
             required: false,
             validate: function(val) {
+
+                console.log('topic validate');
+                console.log($("select#node-input-itype").val());
+                console.log(val);
+
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
                 if($("select#node-input-itype").val() > 3) {
@@ -58,7 +64,7 @@ RED.nodes.registerType("amqp3 in", {
     color: "#ff9933",
     icon: "bridge.png",
     label: function() {
-        return this.name || this.ioname || "amqp";
+        return this.name || this.iname || "amqp";
     },
     labelStyle: function() {
         return this.name ? "node_label_italic" : "";
@@ -70,5 +76,8 @@ RED.nodes.registerType("amqp3 in", {
             $("input#node-input-exchange, input#node-input-topic").trigger("change");
             $("input#node-input-exchange, input#node-input-topic").prop("disabled", isQueueType);
         });
+    },
+    onpaletteadd: function() {
+        console.log('onpaletteadd', this);
     }
 });

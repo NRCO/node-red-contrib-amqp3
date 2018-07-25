@@ -8,7 +8,8 @@ RED.nodes.registerType("amqp3 out", {
     category: "output",
     defaults: {
         name: {
-            value: ""
+            value: "",
+            required: true
         },
         otype: {
             value: "4",
