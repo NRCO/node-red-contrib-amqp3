@@ -12,8 +12,7 @@ RED.nodes.registerType("amqp3 in", {
             required: true
         },
         name: {
-            value: "",
-            required: true
+            value: ""
         },
         itype: {
             value: "4",
@@ -21,7 +20,6 @@ RED.nodes.registerType("amqp3 in", {
         },
         exchange: {
             value: "",
-            required: false,
             validate: function(val) {
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
@@ -36,13 +34,7 @@ RED.nodes.registerType("amqp3 in", {
         },
         topic: {
             value: "",
-            required: false,
             validate: function(val) {
-
-                console.log('topic validate');
-                console.log($("select#node-input-itype").val());
-                console.log(val);
-
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
                 if($("select#node-input-itype").val() > 3) {

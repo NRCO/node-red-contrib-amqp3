@@ -8,8 +8,7 @@ RED.nodes.registerType("amqp3 out", {
     category: "output",
     defaults: {
         name: {
-            value: "",
-            required: true
+            value: ""
         },
         otype: {
             value: "4",
@@ -21,7 +20,6 @@ RED.nodes.registerType("amqp3 out", {
         },
         exchange: {
             value: "",
-            required: false,
             validate: function(val) {
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
@@ -36,7 +34,6 @@ RED.nodes.registerType("amqp3 out", {
         },
         topic: {
             value: "",
-            required: false,
             validate: function(val) {
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
@@ -51,7 +48,6 @@ RED.nodes.registerType("amqp3 out", {
         },
         queue: {
             value: "",
-            required: false,
             validate: function(val) {
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
