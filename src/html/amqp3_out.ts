@@ -57,14 +57,18 @@ RED.nodes.registerType("amqp3 out", {
         queue: {
             value: "",
             validate: function(val) {
-                // si le mode écoute d"une queue est activé
-                // alors exchange n"est pas obligatoire
-                if($("select#node-input-otype").val() <= 3) {
-                    return true;
-                } else if(typeof val === "string" && val.length > 0) {
+                if(!this.changed) {
                     return true;
                 } else {
-                    return false;
+                    // si le mode écoute d"une queue est activé
+                    // alors exchange n"est pas obligatoire
+                    if($("select#node-input-otype").val() <= 3) {
+                        return true;
+                    } else if(typeof val === "string" && val.length > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
         }
