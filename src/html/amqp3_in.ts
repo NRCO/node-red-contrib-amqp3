@@ -19,32 +19,34 @@ RED.nodes.registerType("amqp3 in", {
             required: true
         },
         exchange: {
-            value: "",
-            validate: function(val) {
-                // si le mode écoute d"une queue est activé
-                // alors exchange n"est pas obligatoire
-                if($("select#node-input-itype").val() > 3) {
-                    return true;
-                } else if(typeof val === "string" && val.length > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            value: ""
+            // ,
+            // validate: function(val) {
+            //     // si le mode écoute d"une queue est activé
+            //     // alors exchange n"est pas obligatoire
+            //     if($("select#node-input-itype").val() > 3) {
+            //         return true;
+            //     } else if(typeof val === "string" && val.length > 0) {
+            //         return true;
+            //     } else {
+            //         return false;
+            //     }
+            // }
         },
         topic: {
-            value: "",
-            validate: function(val) {
-                // si le mode écoute d"une queue est activé
-                // alors exchange n"est pas obligatoire
-                if($("select#node-input-itype").val() > 3) {
-                    return true;
-                } else if(typeof val === "string" && val.length > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            value: ""
+            // ,
+            // validate: function(val) {
+            //     // si le mode écoute d"une queue est activé
+            //     // alors exchange n"est pas obligatoire
+            //     if($("select#node-input-itype").val() > 3) {
+            //         return true;
+            //     } else if(typeof val === "string" && val.length > 0) {
+            //         return true;
+            //     } else {
+            //         return false;
+            //     }
+            // }
         },
         queue: {
             value: "",
