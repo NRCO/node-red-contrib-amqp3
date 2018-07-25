@@ -21,7 +21,7 @@ RED.nodes.registerType("amqp3 in", {
         exchange: {
             value: "",
             validate: function(val) {
-                console.log('validate exchange', value);
+                console.log('validate exchange', val);
                 console.log($("select#node-input-itype").val());
 
                 // si le mode écoute d"une queue est activé
@@ -38,7 +38,7 @@ RED.nodes.registerType("amqp3 in", {
         topic: {
             value: "",
             validate: function(val) {
-                console.log('validate topic', value);
+                console.log('validate topic', val);
                 console.log($("select#node-input-itype").val());
                 // si le mode écoute d"une queue est activé
                 // alors exchange n"est pas obligatoire
