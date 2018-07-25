@@ -1,14 +1,14 @@
 <!-- AMQP IN ------------------------------------------------------------------>
 <script type="text/x-red" data-template-name="amqp3 in">
-    <div class="form-row">
+    <div class="form-row input-name">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="">
     </div>
-    <div class="form-row">
+    <div class="form-row input-server">
         <label for="node-input-server"><i class="fa fa-globe"></i> Source</label>
         <input type="text" id="node-input-server" placeholder="AMQP server">
     </div>
-    <div class="form-row">
+    <div class="form-row input-itype">
         <label for="node-input-itype"><i class="fa fa-bullseye"></i> Read from</label>
         <select id="node-input-itype" class="read-mode" style="width:70%">
             <option value="0">direct exchange</option>
@@ -22,7 +22,7 @@
         <label for="node-input-exchange"><i class="fa fa-random"></i> Exchange</label>
         <input type="text" id="node-input-exchange" placeholder="">
     </div>
-    <div class="form-row">
+    <div class="form-row input-topic">
         <label for="node-input-topic"><i class="fa fa-filter"></i> Topic</label>
         <input type="text" id="node-input-topic" class="routing-key" placeholder="">
     </div>

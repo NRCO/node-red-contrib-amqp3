@@ -1,15 +1,15 @@
 <!-- AMQP OUT ----------------------------------------------------------------->
 
 <script type="text/x-red" data-template-name="amqp3 out">
-    <div class="form-row">
+    <div class="form-row input-name">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
-    <div class="form-row">
+    <div class="form-row input-server">
         <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
         <input type="text" id="node-input-server">
     </div>
-    <div class="form-row">
+    <div class="form-row input-otype">
         <label for="node-input-otype"><i class="fa fa-filter"></i> Send to</label>
         <select id="node-input-otype" style="width:70%">
           <option value="0">direct exchange</option>
@@ -23,7 +23,7 @@
         <label for="node-input-exchange"><i class="fa fa-random"></i> Exchange</label>
         <input type="text" id="node-input-exchange" placeholder="">
     </div>
-    <div class="form-row">
+    <div class="form-row input-topic">
         <label for="node-input-topic"><i class="fa fa-filter"></i> Topic</label>
         <input type="text" id="node-input-topic" class="routing-key" placeholder="">
     </div>
