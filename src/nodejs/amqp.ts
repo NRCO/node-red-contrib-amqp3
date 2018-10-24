@@ -79,7 +79,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(node, n);
 
         node.sanitize = function(name) {
-            return name.replace(/[^a-z0-9\-\.]+/gi, ".");
+            return name.replace(/[^a-z0-9\-\._]+/gi, ".");
         };
 
         node.src = null;
